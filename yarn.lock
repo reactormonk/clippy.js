@@ -1896,6 +1896,7 @@ __metadata:
     "@parcel/transformer-typescript-types": ^2.2.0
     "@types/react": ^17.0.38
     "@types/react-dom": ^17.0.11
+    clippy: "file:./clippy.js-v2.0.0.tgz"
     parcel: ^2.2.0
     prettier: ^2.5.1
     react: ^17.0.2
@@ -1903,6 +1904,13 @@ __metadata:
     typescript: ^4.5.4
   languageName: unknown
   linkType: soft
+
+"clippy@file:./clippy.js-v2.0.0.tgz::locator=clippy.js%40workspace%3A.":
+  version: 2.0.0
+  resolution: "clippy@file:./clippy.js-v2.0.0.tgz::locator=clippy.js%40workspace%3A."
+  checksum: 7d43b80a945ab3cba5a567690863143e81a480695ba60668d1495306bec1ff4400b25f3eafb09fa94cebc7522ed19444abdb200b4a14c94c94265f311ec11729
+  languageName: node
+  linkType: hard
 
 "clone@npm:^1.0.2":
   version: 1.0.4

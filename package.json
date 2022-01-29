@@ -17,7 +17,6 @@
     "@parcel/transformer-typescript-types": "^2.2.0",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
-    "clippy": "file:./clippy.js-v2.0.0.tgz",
     "parcel": "^2.2.0",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
