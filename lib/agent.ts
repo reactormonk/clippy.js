@@ -197,7 +197,7 @@ export class Agent {
     return this.play("Show");
   }
 
-  speak(text: string, hold?: Balloon["_hold"]) {
+  speak(text: string, hold?: boolean) {
     this._addToQueue((complete) => {
       this._balloon.speak(complete, text, hold);
     }, this);

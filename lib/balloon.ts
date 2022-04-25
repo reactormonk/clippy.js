@@ -1,10 +1,10 @@
 import { VoidFn } from "./queue";
 
 export enum Sides {
-  TopLeft,
-  TopRight,
-  BottomLeft,
-  BottomRight,
+  TopLeft = "top-left",
+  TopRight = "top-right",
+  BottomLeft = "bottom-left",
+  BottomRight = "bottom-right",
 }
 
 export class Balloon {
@@ -41,15 +41,35 @@ export class Balloon {
   }
 
   reposition() {
+    var minOut=100000;
+    var s: Sides = Sides.TopLeft;
     for (const side in Sides) {
       if (typeof side === "number") {
         this._position(side);
-        if (!this._isOut()) break;
+        const out = this._isOut();
+        if (out < minOut) {
+          minOut = out;
+          s = side;
+          if (!out) break;
+        }
       }
     }
+    if (minOut) {
+      this._position(s);
+      var pos={top: this._balloon.offsetTop, left: this._balloon.offsetLeft};
+      if (pos.top<0) pos.top=5;
+      if (pos.top>window.visualViewport.height-this._balloon.offsetHeight-5)
+        pos.top = window.visualViewport.height - this._balloon.offsetHeight - 5;
+      if (pos.left<0) pos.left=5;
+      if (pos.left>window.visualViewport.width-this._balloon.offsetWidth-5)
+        pos.left=window.visualViewport.width-this._balloon.offsetWidth-5;
+      this._balloon.style.top = `${pos.top}px`;
+      this._balloon.style.left = `${pos.left}px`;
+      this._balloon.classList.add("clippy-" + s);
   }
+}
 
-  speak(complete: VoidFn, text: string, hold?: Balloon["_hold"]) {
+  speak(complete: VoidFn, text: string, hold?: boolean) {
     this._hidden = false;
     this.show();
     // set height to auto
@@ -167,10 +187,14 @@ export class Balloon {
     const wH = window.innerHeight;
 
     const m = 5;
-    if (o.top - m < 0 || o.left - m < 0) return true;
-    if (o.top + bH + m > wH || o.left + bW + m > wW) return true;
+    var outX=0;
+    var outY=0;
+    if (o.top - m < 0) outY= (m - o.top)/wH;
+    if (o.left - m < 0) outX= (m-o.left)/wH;
+    if ((o.top + bH + m) > wH) outY= o.top + bH + m/wH-1;
+    if ((o.left + bW + m) > wW) outX= o.left + bW + m/wW-1;
 
-    return false;
+    return Math.sqrt(outX*outX+outY*outY);
   }
 
   private _finishHideBalloon() {
@@ -180,7 +204,7 @@ export class Balloon {
     this._hiding = null;
   }
 
-  private _sayWords(text: string, hold: Balloon["_hold"], complete: VoidFn) {
+  private _sayWords(text: string, hold: boolean, complete: VoidFn) {
     this._active = true;
     this._hold = hold;
     const words = text.split(/[^\S-]/);
